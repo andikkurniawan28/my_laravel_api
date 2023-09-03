@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +15,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(User::count() != 0){
-            $user = User::serve();
-            $message = "Users are listed";
+        if(Role::count() != 0){
+            $role = Role::all();
+            $message = "Roles are listed";
             $status = 200;
         } else {
-            $user = NULL;
-            $message = "Users are blank!";
+            $role = NULL;
+            $message = "Roles are blank!";
             $status = 404;
         }
         return response()->json([
-            "user" => $user,
+            "role" => $role,
             "message" => $message,
         ], $status);
     }
@@ -49,17 +49,16 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->request->add(["password" => bcrypt($request->password)]);
-            $user = User::create($request->all());
-            $message = "User is created";
+            $role = Role::create($request->all());
+            $message = "Role is created";
             $status = 201;
         } catch (\Illuminate\Database\QueryException $exception) {
-            $user = NULL;
-            $message = "User is failed to created, bad request!";
+            $role = NULL;
+            $message = "Role is failed to created, bad request!";
             $status = 400;
         }
         return response()->json([
-            "user" => $user,
+            "role" => $role,
             "message" => $message,
         ], $status);
     }
@@ -67,23 +66,23 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $find = User::whereId($id);
+        $find = Role::whereId($id);
         if($find->count("id") != 0) {
-            $user = $find->get()->last();
-            $message = "User is found";
+            $role = $find->get()->last();
+            $message = "Role is found";
             $status = 200;
         } else {
-            $user = NULL;
-            $message = "User not found!";
+            $role = NULL;
+            $message = "Role not found!";
             $status = 404;
         }
         return response()->json([
-            "user" => $user,
+            "role" => $role,
             "message" => $message,
         ], $status);
     }
@@ -91,10 +90,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Role $role)
     {
         //
     }
@@ -103,24 +102,24 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $find = User::whereId($id);
+        $find = Role::whereId($id);
         if($find->count("id") != 0) {
             $find->update($request->except(["_token", "_method"]));
-            $user = $find->get()->last();
-            $message = "User is updated";
+            $role = $find->get()->last();
+            $message = "Role is updated";
             $status = 200;
         } else {
-            $user = NULL;
-            $message = "User not found!";
+            $role = NULL;
+            $message = "Role not found!";
             $status = 404;
         }
         return response()->json([
-            "user" => $user,
+            "role" => $role,
             "message" => $message,
         ], $status);
     }
@@ -128,24 +127,24 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $find = User::whereId($id);
+        $find = Role::whereId($id);
         if($find->count("id") != 0) {
-            $user = $find->get()->last();
+            $role = $find->get()->last();
             $find->delete();
-            $message = "User is deleted";
+            $message = "Role is deleted";
             $status = 200;
         } else {
-            $user = NULL;
-            $message = "User not found!";
+            $role = NULL;
+            $message = "Role not found!";
             $status = 404;
         }
         return response()->json([
-            "user" => $user,
+            "role" => $role,
             "message" => $message,
         ], $status);
     }

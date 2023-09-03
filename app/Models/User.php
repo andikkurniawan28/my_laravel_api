@@ -21,4 +21,10 @@ class User extends Authenticatable
     public function role(){
         return $this->belongsTo(Role::class);
     }
+
+    public static function serve(){
+        return self::leftjoin("roles", "users.role_id", "roles.id")
+            ->select("users.*", "roles.name as role")
+            ->get();
+    }
 }
